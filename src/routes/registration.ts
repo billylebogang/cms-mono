@@ -5,26 +5,24 @@ import { User } from "../models/models"
 
 
 
-
+//declaring the registration router 
 const registrationRouter = Router();
 
-const getHome: RequestHandler = (req: Request, res: Response) => {
-    return res.status(200).send("Welcome home")
-}
 
-
+//creating a user, inserting into the database
 const createUser: RequestHandler = async (req: Request, res: Response) => {
 
     return res.status(200).send(user)
 }
 
+//method to retrieve all users from the db
 const getUsers: RequestHandler = async (req: Request, res: Response) => {
     await User.sync({alter: true})
     const allUsers = await User.findAll()
     console.log(allUsers)
     return res.status(200).json(allUsers)
 }
-
+//method to update the user details
 const updateUser: RequestHandler = async (req: Request, res: Response) => {
 
     let newUser: userType = {
@@ -37,17 +35,20 @@ const updateUser: RequestHandler = async (req: Request, res: Response) => {
     return res.status(200).send('success')
 }
 
+//method to delete a user
 const deleteUser: RequestHandler = (req: Request, res: Response) => {
 
     return res.status(200).send(user)
 }
 
+//method not allowed to be used on request that are not allowed 
+ //TODO: later move to helpers when including other routers
 const methodNotAllowed: RequestHandler = (req: Request, res: Response) => {
     res.status(405).send('method not allowed')
 }
 
 
-
+//router definition with its method calling
 registrationRouter
     .get( '/',getUsers)
     .post('/', createUser)
@@ -55,5 +56,5 @@ registrationRouter
     .delete('/', methodNotAllowed )
 
 
-
+//export the router to be used on the main server file
 export {registrationRouter}

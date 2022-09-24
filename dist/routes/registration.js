@@ -13,20 +13,21 @@ exports.registrationRouter = void 0;
 const express_1 = require("express");
 const databaseHelpers_1 = require("../helpers/databaseHelpers");
 const models_1 = require("../models/models");
+//declaring the registration router 
 const registrationRouter = (0, express_1.Router)();
 exports.registrationRouter = registrationRouter;
-const getHome = (req, res) => {
-    return res.status(200).send("Welcome home");
-};
+//creating a user, inserting into the database
 const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     return res.status(200).send(databaseHelpers_1.user);
 });
+//method to retrieve all users from the db
 const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     yield models_1.User.sync({ alter: true });
     const allUsers = yield models_1.User.findAll();
     console.log(allUsers);
     return res.status(200).json(allUsers);
 });
+//method to update the user details
 const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let newUser = {
         id: req.body.id,
@@ -37,12 +38,16 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     const creatingNewUser = yield models_1.User.create(newUser);
     return res.status(200).send('success');
 });
+//method to delete a user
 const deleteUser = (req, res) => {
     return res.status(200).send(databaseHelpers_1.user);
 };
+//method not allowed to be used on request that are not allowed 
+//TODO: later move to helpers when including other routers
 const methodNotAllowed = (req, res) => {
     res.status(405).send('method not allowed');
 };
+//router definition with its method calling
 registrationRouter
     .get('/', getUsers)
     .post('/', createUser)

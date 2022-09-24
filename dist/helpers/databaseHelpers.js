@@ -12,23 +12,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.connect = exports.sequelize = exports.user = void 0;
 const sequelize_1 = require("sequelize");
 exports.user = "hello from the internet";
-//for connection to db
+//for storing of database coonection 
 const databaseName = "sql11521819";
 const username = "sql11521819";
 const myHostname = "sql11.freesqldatabase.com";
 const port = 3306;
 const password = "TJAJlmspEa";
+//variable for database connection
 exports.sequelize = new sequelize_1.Sequelize(databaseName, username, password, {
     dialect: 'mysql',
     host: myHostname,
 });
+//function for establishing the connection to the database
 const connect = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        //trying the connection
         yield exports.sequelize.authenticate();
         console.log('connection is on');
+        //return true if db is connected
         return true;
     }
     catch (errors) {
+        //log out the error when occurred 
         console.error(errors + ' could not connect');
         return false;
     }
