@@ -28,12 +28,12 @@ exports.options = {
     apis: ['./src/swagger.ts'],
     tags: [
         {
-            name: 'Users'
+            name: 'Farmer'
         }
     ],
     paths: {
-        '/users': {
-            'get': registrationSwagger_1.getUsers
+        '/farmer': {
+            'get': registrationSwagger_1.getFarmer,
         }
     }
 };

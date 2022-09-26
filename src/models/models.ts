@@ -1,5 +1,6 @@
 import { sequelize } from "../helpers/databaseHelpers";
 import { DataTypes } from 'sequelize'
+import { type } from "os";
 
 
 //the user sequalize model to be use to insert in to the db
@@ -28,3 +29,79 @@ export const User = sequelize.define('user', {
 {
     tableName: 'users',
 });
+
+
+//the farmer sequalize model to be use to add new farmer in to the db
+
+export const Farmer = sequelize.define('farmer', {
+    userId:{
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        allowNull:false
+    },
+    farmerType: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    individualName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    individualOmang: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    individualGender: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    individualPlaeOfBirth: {
+        type: DataTypes.DATE,
+        allowNull: false,
+    },
+    individualDateOfBirth: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    individualExpiryDate: {
+        type: DataTypes.DATE,
+        allowNull: false,
+    },
+    companyName: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
+    companyType: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
+    coDirectors: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
+    coOwnership: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
+    companyRegistrationDate: {
+        type: DataTypes.DATE,
+        allowNull: true,
+    },
+    farmId: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+    },
+    leaseNumber:{
+        type: DataTypes.INTEGER,
+        allowNull: true,
+    }
+
+
+},
+{
+    tableName: 'farmers'
+}
+
+)
+
+

@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.connect = exports.sequelize = exports.user = void 0;
 const sequelize_1 = require("sequelize");
+const models_1 = require("../models/models");
 exports.user = "hello from the internet";
 //for storing of database coonection 
 const databaseName = "sql11521819";
@@ -28,6 +29,7 @@ const connect = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         //trying the connection
         yield exports.sequelize.authenticate();
+        models_1.Farmer.sync();
         console.log('connection is on');
         //return true if db is connected
         return true;

@@ -11,37 +11,53 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.registrationRouter = void 0;
 const express_1 = require("express");
-const databaseHelpers_1 = require("../helpers/databaseHelpers");
 const models_1 = require("../models/models");
 //declaring the registration router 
 const registrationRouter = (0, express_1.Router)();
 exports.registrationRouter = registrationRouter;
-//creating a user, inserting into the database
-const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    return res.status(200).send(databaseHelpers_1.user);
+const addNewFarmerToDb = (newFarmer) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const addedFarmer = yield models_1.Farmer.create(newFarmer);
+        return true;
+    }
+    catch (error) {
+        console.error(error);
+        return false;
+    }
 });
+const generateOTP = () => {
+    const num = 123;
+    return num;
+};
+const getEmailAndNumberFromStaging = (omang) => {
+    const emailAndNumber = {
+        email: "email@example.com",
+        number: "72122334"
+    };
+    return emailAndNumber;
+};
+const handleOTPResponse = (req, res) => {
+    const otp = req.body.otp;
+    //confirm otp
+    return res.status(200).json({ name: 'farmer here' });
+};
+//creating a user, inserting into the database
+const createFarmer = (req, res) => __awaiter(void 0, void 0, void 0, function* () { });
 //method to retrieve all users from the db
-const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    yield models_1.User.sync({ alter: true });
-    const allUsers = yield models_1.User.findAll();
-    console.log(allUsers);
-    return res.status(200).json(allUsers);
+const getFarmer = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const primaryKey = req.params.id;
+    try {
+        const singleFarmer = yield models_1.Farmer.findByPk(primaryKey);
+        return res.status(200).json(singleFarmer);
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(400).send("Invalid ID");
+    }
 });
 //method to update the user details
-const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    let newUser = {
-        id: req.body.id,
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.password,
-    };
-    const creatingNewUser = yield models_1.User.create(newUser);
-    return res.status(200).send('success');
-});
+const updateFarmer = (req, res) => __awaiter(void 0, void 0, void 0, function* () { });
 //method to delete a user
-const deleteUser = (req, res) => {
-    return res.status(200).send(databaseHelpers_1.user);
-};
 //method not allowed to be used on request that are not allowed 
 //TODO: later move to helpers when including other routers
 const methodNotAllowed = (req, res) => {
@@ -49,7 +65,8 @@ const methodNotAllowed = (req, res) => {
 };
 //router definition with its method calling
 registrationRouter
-    .get('/', getUsers)
-    .post('/', createUser)
-    .put('/', methodNotAllowed)
+    .get('/:id', getFarmer)
+    .post('/', createFarmer) //post for omang number
+    .post('/otp/', handleOTPResponse) //post for otp 
+    .put('/:id', updateFarmer)
     .delete('/', methodNotAllowed);

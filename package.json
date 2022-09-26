@@ -29,7 +29,6 @@
     "@typescript-eslint/eslint-plugin": "^5.38.0",
     "@typescript-eslint/parser": "^5.38.0",
     "concurrently": "^7.4.0",
-    "eslint": "^8.24.0",
     "nodemon": "^2.0.20",
     "sequelize-cli": "^6.4.1",
     "ts-node": "^10.9.1",

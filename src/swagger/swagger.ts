@@ -1,8 +1,8 @@
 import { swaggerConfigInterface } from '../models/interfaces'
-import {getUsers} from './registrationSwagger'
+import {getFarmer, getFarmers} from './registrationSwagger'
 
 
-export const options: swaggerConfigInterface = {
+export const options= {
    
     openapi : '3.0.1',
     info : {
@@ -31,12 +31,13 @@ export const options: swaggerConfigInterface = {
     apis: ['./src/swagger.ts'],
     tags:[
         {
-            name: 'Users'
+            name: 'Farmer'
         }
     ],
     paths: {
-        '/users': {
-            'get': getUsers
+        '/farmer': {
+            'get': getFarmer,
+            
         }
     }
 }

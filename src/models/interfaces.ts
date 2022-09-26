@@ -1,11 +1,19 @@
 
 //the user data type to use to tye users
 //TODO: define as a interface
-export type userType = {
-    id: number,
-    name: string,
-    email: string,
-    password: string,
+export type farmerType = {
+    userId: number,
+    farmerType: string,
+    individualName: string,
+    individualOmang: string,
+    individualGender: string,
+    individualPlaeOfBirth: string,
+    individualDateOfBirth: string,
+    individualExpiryDate: string,
+    companyName: string,
+    companyType: string,
+    coDirectors: string,
+    coOwnership: number,
 
 }
 

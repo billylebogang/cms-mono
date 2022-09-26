@@ -1,7 +1,7 @@
-import { RequestHandler, Request, Response, Router} from "express"
+import { RequestHandler, Request, Response, Router, response} from "express"
 import {user} from '../helpers/databaseHelpers'
-import { userType } from "../models/interfaces"
-import { User } from "../models/models"
+import { farmerType } from "../models/interfaces"
+import { Farmer } from "../models/models"
 
 
 
@@ -9,37 +9,69 @@ import { User } from "../models/models"
 const registrationRouter = Router();
 
 
-//creating a user, inserting into the database
-const createUser: RequestHandler = async (req: Request, res: Response) => {
 
-    return res.status(200).send(user)
+const addNewFarmerToDb = async ( newFarmer: farmerType ): Promise<boolean> => {
+
+    try {
+        const addedFarmer = await Farmer.create(newFarmer) 
+        return true
+    } catch (error) {
+       console.error(error)
+       return false
+    } 
 }
+
+
+const generateOTP = () => {
+
+    const num: number = 123;
+
+    return num
+}
+
+const getEmailAndNumberFromStaging = ( omang:number) => {
+
+    const emailAndNumber = {
+        email: "email@example.com",
+        number: "72122334"
+    }
+
+    return emailAndNumber;
+}
+
+
+const handleOTPResponse: RequestHandler = (req: Request, res: Response) => {
+   
+    const otp = req.body.otp;
+    //confirm otp
+
+    return res.status(200).json({ name:'farmer here'})
+
+}
+
+ 
+
+//creating a user, inserting into the database
+const createFarmer: RequestHandler = async (req: Request, res: Response) => {}
 
 //method to retrieve all users from the db
-const getUsers: RequestHandler = async (req: Request, res: Response) => {
-    await User.sync({alter: true})
-    const allUsers = await User.findAll()
-    console.log(allUsers)
-    return res.status(200).json(allUsers)
+const getFarmer: RequestHandler = async (req: Request, res: Response) => {
+
+    const primaryKey = req.params.id
+
+    try {
+        const singleFarmer = await Farmer.findByPk(primaryKey)
+        return res.status(200).json(singleFarmer)
+    } catch (error) {
+        console.error(error)
+        return res.status(400).send("Invalid ID")
+    }
+    
 }
 //method to update the user details
-const updateUser: RequestHandler = async (req: Request, res: Response) => {
-
-    let newUser: userType = {
-        id: req.body.id,
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.password,
-    }
-    const creatingNewUser = await User.create(newUser)
-    return res.status(200).send('success')
-}
+const updateFarmer: RequestHandler = async (req: Request, res: Response) => {}
 
 //method to delete a user
-const deleteUser: RequestHandler = (req: Request, res: Response) => {
-
-    return res.status(200).send(user)
-}
 
 //method not allowed to be used on request that are not allowed 
  //TODO: later move to helpers when including other routers
@@ -50,9 +82,10 @@ const methodNotAllowed: RequestHandler = (req: Request, res: Response) => {
 
 //router definition with its method calling
 registrationRouter
-    .get( '/',getUsers)
-    .post('/', createUser)
-    .put('/',methodNotAllowed)
+    .get( '/:id',getFarmer)
+    .post('/', createFarmer) //post for omang number
+    .post('/otp/', handleOTPResponse) //post for otp 
+    .put('/:id',updateFarmer)
     .delete('/', methodNotAllowed )
 
 
