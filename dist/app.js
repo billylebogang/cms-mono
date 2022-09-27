@@ -29,7 +29,7 @@ app.get('/', (res, req) => {
     res.send('welcome to home');
 });
 //use the registration router
-app.use('/users', registration_1.registrationRouter);
+app.use('/farmer', registration_1.registrationRouter);
 // server listening
 //TODO: set port env variables for production p
 app.listen(port, () => {

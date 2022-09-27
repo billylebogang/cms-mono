@@ -1,7 +1,9 @@
 import { RequestHandler, Request, Response, Router, NextFunction} from "express"
+import { nextTick } from "process";
+import { where } from "sequelize";
 import {user} from '../helpers/databaseHelpers'
 import { farmerType } from "../models/interfaces"
-import { Farmer } from "../models/models"
+import { Farmer, User} from "../models/models"
 
 
 
@@ -55,19 +57,27 @@ const handleOTPResponse: RequestHandler = (req: Request, res: Response) => {
 }
 
  
+const authenticateNISMidware: RequestHandler = (req: Request, res: Response, next: NextFunction) => {
+    
+    const omang = req.body.omangId
+    
+    try {
+        //get from stating server
+        const singleFarmer = await Farmer.findOne({where: {userId: primaryKey}})
+        next()
+    } catch (error) {
+        console.error(error)
+        return res.status(400).send(error)
+    }
+
+}
 
 //creating a user, inserting into the database
 const createFarmer: RequestHandler = async (req: Request, res: Response) => {
 
-    const primaryKey = req.params.primaryKey
+    const primaryKey = req.body.id
 
-    try {
-        const singleFarmer = await Farmer.findByPk(primaryKey)
-        return res.status(200).json(singleFarmer)
-    } catch (error) {
-        console.error(error)
-        return res.status(400).send("Invalid ID")
-    }
+    
 
 }
 
@@ -78,10 +88,31 @@ const getFarmer: RequestHandler = async (req: Request, res: Response) => {
 
     try {
         const singleFarmer = await Farmer.findByPk(primaryKey)
-        return res.status(200).json(singleFarmer)
+
+        if (singleFarmer === null) {
+            return res.status(404).send("not found")
+        } else {
+
+            console.log( "SINGLE FAAAAAAAAAAAAAAAAAAAA", singleFarmer);
+            return res.status(200).json( singleFarmer )
+        }
     } catch (error) {
         console.error(error)
-        return res.status(400).send("Invalid ID")
+        return res.status(400).send(error)
+    }
+    
+}
+
+//method to retrieve all users from the db
+const getFarmers: RequestHandler = async (req: Request, res: Response) => {
+
+
+    try {
+        const allFarmers = await Farmer.findAll()
+        return res.status(200).json(allFarmers)
+    } catch (error) {
+        console.error(error)
+        return res.status(400).send(error)
     }
     
 }
@@ -100,6 +131,7 @@ const methodNotAllowed: RequestHandler = (req: Request, res: Response) => {
 //router definition with its method calling
 registrationRouter
     .get( '/:id',getFarmer)
+    .get( '/',getFarmers)
     .post('/',authMidWare, createFarmer) //post for omang number
     .post('/otp/', handleOTPResponse) //post for otp 
     .put('/:id',updateFarmer)

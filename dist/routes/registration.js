@@ -45,28 +45,49 @@ const handleOTPResponse = (req, res) => {
     //confirm otp
     return res.status(200).json({ name: 'farmer here' });
 };
-//creating a user, inserting into the database
-const createFarmer = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const primaryKey = req.params.primaryKey;
+const authenticateNISMidware = (req, res, next) => {
+    const omang = req.body.omangId;
     try {
-        const singleFarmer = yield models_1.Farmer.findByPk(primaryKey);
-        return res.status(200).json(singleFarmer);
+        //get from stating server
+        const singleFarmer = yield models_1.Farmer.findOne({ where: { userId: primaryKey } });
+        next();
     }
     catch (error) {
         console.error(error);
-        return res.status(400).send("Invalid ID");
+        return res.status(400).send(error);
     }
+};
+//creating a user, inserting into the database
+const createFarmer = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const primaryKey = req.body.id;
 });
 //method to retrieve all users from the db
 const getFarmer = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const primaryKey = req.params.id;
     try {
         const singleFarmer = yield models_1.Farmer.findByPk(primaryKey);
-        return res.status(200).json(singleFarmer);
+        if (singleFarmer === null) {
+            return res.status(404).send("not found");
+        }
+        else {
+            console.log("SINGLE FAAAAAAAAAAAAAAAAAAAA", singleFarmer);
+            return res.status(200).json(singleFarmer);
+        }
     }
     catch (error) {
         console.error(error);
-        return res.status(400).send("Invalid ID");
+        return res.status(400).send(error);
+    }
+});
+//method to retrieve all users from the db
+const getFarmers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const allFarmers = yield models_1.Farmer.findAll();
+        return res.status(200).json(allFarmers);
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(400).send(error);
     }
 });
 //method to update the user details
@@ -80,6 +101,7 @@ const methodNotAllowed = (req, res) => {
 //router definition with its method calling
 registrationRouter
     .get('/:id', getFarmer)
+    .get('/', getFarmers)
     .post('/', authMidWare, createFarmer) //post for omang number
     .post('/otp/', handleOTPResponse) //post for otp 
     .put('/:id', updateFarmer)

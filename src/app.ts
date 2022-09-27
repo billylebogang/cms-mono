@@ -33,7 +33,7 @@ app.get('/', (res: Response, req: Request) => {
 })
 
 //use the registration router
-app.use('/users', registrationRouter)
+app.use('/farmer', registrationRouter)
 
 // server listening
 //TODO: set port env variables for production p
