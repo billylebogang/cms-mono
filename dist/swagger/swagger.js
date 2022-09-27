@@ -29,10 +29,20 @@ exports.options = {
     tags: [
         {
             name: 'Farmer'
+        },
+        {
+            name: 'Farmers'
         }
     ],
     paths: {
         '/farmer': {
+            'get': registrationSwagger_1.getFarmers,
+            'post': registrationSwagger_1.postFarmer,
+        },
+        '/farmer/omang/:omang': {
+            'get': registrationSwagger_1.getMotswana,
+        },
+        '/farmers/:id': {
             'get': registrationSwagger_1.getFarmer,
         }
     }

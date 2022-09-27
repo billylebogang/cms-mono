@@ -1,5 +1,5 @@
 import { swaggerConfigInterface } from '../models/interfaces'
-import {getFarmer, getFarmers} from './registrationSwagger'
+import {getFarmer, getFarmers, getMotswana, postFarmer} from './registrationSwagger'
 
 
 export const options= {
@@ -32,14 +32,27 @@ export const options= {
     tags:[
         {
             name: 'Farmer'
+        },
+        {
+            name: 'Farmers'
         }
     ],
     paths: {
         '/farmer': {
-            'get': getFarmer,
+            'get': getFarmers,
+            'post': postFarmer,
             
-        }
+            
+        },
+        '/farmer/omang/:omang': {
+            'get': getMotswana,
+
+        },
+        '/farmers/:id': {
+            'get': getFarmer,
+
     }
 }
 
 
+}

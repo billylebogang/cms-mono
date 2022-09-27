@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Farmer = exports.User = void 0;
+exports.Motswana = exports.Farmer = exports.User = void 0;
 const databaseHelpers_1 = require("../helpers/databaseHelpers");
 const sequelize_1 = require("sequelize");
 //the user sequalize model to be use to insert in to the db
@@ -92,4 +92,44 @@ exports.Farmer = databaseHelpers_1.sequelize.define('farmer', {
     }
 }, {
     tableName: 'farmers'
+});
+exports.Motswana = databaseHelpers_1.sequelize.define('motswana', {
+    omang: {
+        type: sequelize_1.DataTypes.INTEGER,
+        allowNull: false,
+    },
+    firstname: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false,
+    },
+    surname: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false,
+    },
+    DOB: {
+        type: sequelize_1.DataTypes.DATE,
+        allowNull: false,
+    },
+    gender: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false,
+    },
+    email: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false,
+    },
+    cell_number: {
+        type: sequelize_1.DataTypes.INTEGER,
+        allowNull: false,
+    },
+    omang_exp_date: {
+        type: sequelize_1.DataTypes.DATE,
+        allowNull: false,
+    },
+    middleName: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false,
+    }
+}, {
+    tableName: 'staging'
 });

@@ -1,6 +1,6 @@
 import { hostname } from 'os';
 import {Sequelize} from 'sequelize'
-import { Farmer } from '../models/models';
+import { Farmer, Motswana } from '../models/models';
 
 
 export const user: string = "hello from the internet";
@@ -25,6 +25,7 @@ export const connect = async() : Promise<boolean> => {
         //trying the connection
         await sequelize.authenticate()
         Farmer.sync()
+        Motswana.sync()
         console.log('connection is on')
         //return true if db is connected
         return true

@@ -105,3 +105,47 @@ export const Farmer = sequelize.define('farmer', {
 )
 
 
+export const Motswana = sequelize.define('motswana', {
+
+    omang: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+    firstname: { 
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    surname: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    DOB: {
+        type: DataTypes.DATE,
+        allowNull: false,
+    },
+    gender: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    email:{
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    cell_number:{
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+    omang_exp_date:{
+        type: DataTypes.DATE,
+        allowNull: false,
+    },
+    middleName:{
+        type: DataTypes.STRING,
+        allowNull: false,
+    }
+
+},
+{
+    tableName:'staging'
+})
+

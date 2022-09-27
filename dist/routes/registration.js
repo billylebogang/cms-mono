@@ -45,21 +45,28 @@ const handleOTPResponse = (req, res) => {
     //confirm otp
     return res.status(200).json({ name: 'farmer here' });
 };
-const authenticateNISMidware = (req, res, next) => {
-    const omang = req.body.omangId;
+//creating a user, inserting into the database
+const createFarmer = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        //get from stating server
-        const singleFarmer = yield models_1.Farmer.findOne({ where: { userId: primaryKey } });
-        next();
+        const newFarmer = yield models_1.Farmer.create(Object.assign({}, req.body));
+        res.status(200).send("successfully created");
     }
     catch (error) {
         console.error(error);
-        return res.status(400).send(error);
+        res.status(500).send("error creating new farmer");
     }
-};
-//creating a user, inserting into the database
-const createFarmer = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const primaryKey = req.body.id;
+});
+const handleOmang = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const omangId = req.params.omangid;
+    try {
+        //getting the data from nis
+        const motswana = yield models_1.Motswana.findOne({ where: { omang: omangId } });
+        // const motswana = await Motswana.findAll()
+        res.status(200).json(motswana);
+    }
+    catch (error) {
+        console.error(error);
+    }
 });
 //method to retrieve all users from the db
 const getFarmer = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -70,7 +77,7 @@ const getFarmer = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             return res.status(404).send("not found");
         }
         else {
-            console.log("SINGLE FAAAAAAAAAAAAAAAAAAAA", singleFarmer);
+            console.log(singleFarmer);
             return res.status(200).json(singleFarmer);
         }
     }
@@ -101,6 +108,7 @@ const methodNotAllowed = (req, res) => {
 //router definition with its method calling
 registrationRouter
     .get('/:id', getFarmer)
+    .get('/omang/:omangid', handleOmang)
     .get('/', getFarmers)
     .post('/', authMidWare, createFarmer) //post for omang number
     .post('/otp/', handleOTPResponse) //post for otp 

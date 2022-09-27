@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createUser = exports.getFarmer = exports.getFarmers = void 0;
+exports.getMotswana = exports.getFarmer = exports.postFarmer = exports.getFarmers = void 0;
 exports.getFarmers = {
     tags: ['Farmers'],
     description: 'return a list of all farmer details in the database',
@@ -12,6 +12,76 @@ exports.getFarmers = {
                 'application/json': {
                     schema: {
                         type: 'array',
+                        items: {
+                            omang: {
+                                type: 'number',
+                                description: 'unique identify for the user'
+                            },
+                            firstname: {
+                                type: 'string',
+                                description: 'name of the user'
+                            },
+                            middlename: {
+                                type: 'string',
+                                description: 'unique name  for the user'
+                            },
+                            lastname: {
+                                type: 'number',
+                                description: 'for auth'
+                            },
+                            gender: {
+                                type: 'string',
+                                description: 'gender of the farmer'
+                            },
+                            dateOfBirth: {
+                                type: 'number',
+                                description: 'date of birth of the farmer'
+                            },
+                            placeOfBirth: {
+                                type: 'String',
+                                description: 'place of birth of the farmer'
+                            },
+                            residentPermitNumber: {
+                                type: 'number',
+                                description: 'resident permit number for non-citizens'
+                            },
+                            residentPermitNumberExpiryDate: {
+                                type: 'number',
+                                description: 'resident permit date of expiry for non-citizens'
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        '400': {
+            description: 'error in fetching a list of users',
+            'content': {
+                'application/json': {
+                    schema: {
+                        type: 'object',
+                        items: {
+                            results: {
+                                type: 'string'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+};
+exports.postFarmer = {
+    tags: ['Farmers'],
+    description: 'Add a farmer of database',
+    operationId: 'postFarmers',
+    responses: {
+        '200': {
+            description: 'successfull added farmers',
+            'content': {
+                'application/json': {
+                    schema: {
+                        type: 'object',
                         items: {
                             omang: {
                                 type: 'number',
@@ -141,33 +211,53 @@ exports.getFarmer = {
         }
     }
 };
-exports.createUser = {
-    tags: ['farmer'],
-    description: 'create a new farmmer profile',
-    operationId: 'createFarmer',
+exports.getMotswana = {
+    tags: ['motswana'],
+    description: 'create a new Motswana profile from NIS',
+    operationId: 'getMotswana',
     responses: {
         '200': {
-            description: 'successfull added a new farmmer profile',
+            description: 'successfull retrieve details of Motswana/citizen profile',
             'content': {
                 'application/json': {
                     schema: {
-                        type: 'array',
+                        type: 'object',
                         items: {
-                            userId: {
+                            omang: {
                                 type: 'number',
-                                description: 'unique identify for the user'
+                                description: 'unique identify id for the Motswana/citizen '
                             },
-                            name: {
+                            firstname: {
                                 type: 'string',
-                                description: 'name of the user'
+                                description: 'firstname of the Motswana/citizen'
                             },
-                            username: {
+                            surname: {
                                 type: 'string',
-                                description: 'unique name  for the user'
+                                description: 'surname for the motswana/citizen'
                             },
-                            password: {
-                                type: 'number',
-                                description: 'for auth'
+                            DOB: {
+                                type: 'date',
+                                description: 'data of birth for motswana/citizen'
+                            },
+                            gender: {
+                                type: 'string',
+                                description: 'gender of the motswana/citizen'
+                            },
+                            email: {
+                                type: 'string',
+                                description: 'email of the motswana/citizen'
+                            },
+                            cell_number: {
+                                type: 'string',
+                                description: 'cell number of the motswana/citizen'
+                            },
+                            omang_exp_date: {
+                                type: 'string',
+                                description: 'expiry data for motswana omang'
+                            },
+                            middleName: {
+                                type: 'string',
+                                description: 'middle name of the motswana/citizen'
                             }
                         }
                     }

@@ -30,6 +30,7 @@ const connect = () => __awaiter(void 0, void 0, void 0, function* () {
         //trying the connection
         yield exports.sequelize.authenticate();
         models_1.Farmer.sync();
+        models_1.Motswana.sync();
         console.log('connection is on');
         //return true if db is connected
         return true;
