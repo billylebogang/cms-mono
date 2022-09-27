@@ -1,4 +1,4 @@
-import { RequestHandler, Request, Response, Router, response} from "express"
+import { RequestHandler, Request, Response, Router, NextFunction} from "express"
 import {user} from '../helpers/databaseHelpers'
 import { farmerType } from "../models/interfaces"
 import { Farmer } from "../models/models"
@@ -22,12 +22,6 @@ const addNewFarmerToDb = async ( newFarmer: farmerType ): Promise<boolean> => {
 }
 
 
-const generateOTP = () => {
-
-    const num: number = 123;
-
-    return num
-}
 
 const getEmailAndNumberFromStaging = ( omang:number) => {
 
@@ -37,6 +31,17 @@ const getEmailAndNumberFromStaging = ( omang:number) => {
     }
 
     return emailAndNumber;
+}
+
+
+const authMidWare: RequestHandler = ( req: Request, res: Response, next: NextFunction): void => {
+
+    if( req.body.otp == 123 ){
+        next()
+    }else{
+        res.sendStatus(401)
+    }
+    
 }
 
 
@@ -52,7 +57,19 @@ const handleOTPResponse: RequestHandler = (req: Request, res: Response) => {
  
 
 //creating a user, inserting into the database
-const createFarmer: RequestHandler = async (req: Request, res: Response) => {}
+const createFarmer: RequestHandler = async (req: Request, res: Response) => {
+
+    const primaryKey = req.params.primaryKey
+
+    try {
+        const singleFarmer = await Farmer.findByPk(primaryKey)
+        return res.status(200).json(singleFarmer)
+    } catch (error) {
+        console.error(error)
+        return res.status(400).send("Invalid ID")
+    }
+
+}
 
 //method to retrieve all users from the db
 const getFarmer: RequestHandler = async (req: Request, res: Response) => {
@@ -83,7 +100,7 @@ const methodNotAllowed: RequestHandler = (req: Request, res: Response) => {
 //router definition with its method calling
 registrationRouter
     .get( '/:id',getFarmer)
-    .post('/', createFarmer) //post for omang number
+    .post('/',authMidWare, createFarmer) //post for omang number
     .post('/otp/', handleOTPResponse) //post for otp 
     .put('/:id',updateFarmer)
     .delete('/', methodNotAllowed )

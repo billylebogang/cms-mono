@@ -25,10 +25,6 @@ const addNewFarmerToDb = (newFarmer) => __awaiter(void 0, void 0, void 0, functi
         return false;
     }
 });
-const generateOTP = () => {
-    const num = 123;
-    return num;
-};
 const getEmailAndNumberFromStaging = (omang) => {
     const emailAndNumber = {
         email: "email@example.com",
@@ -36,13 +32,31 @@ const getEmailAndNumberFromStaging = (omang) => {
     };
     return emailAndNumber;
 };
+const authMidWare = (req, res, next) => {
+    if (req.body.otp == 123) {
+        next();
+    }
+    else {
+        res.sendStatus(401);
+    }
+};
 const handleOTPResponse = (req, res) => {
     const otp = req.body.otp;
     //confirm otp
     return res.status(200).json({ name: 'farmer here' });
 };
 //creating a user, inserting into the database
-const createFarmer = (req, res) => __awaiter(void 0, void 0, void 0, function* () { });
+const createFarmer = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const primaryKey = req.params.primaryKey;
+    try {
+        const singleFarmer = yield models_1.Farmer.findByPk(primaryKey);
+        return res.status(200).json(singleFarmer);
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(400).send("Invalid ID");
+    }
+});
 //method to retrieve all users from the db
 const getFarmer = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const primaryKey = req.params.id;
@@ -66,7 +80,7 @@ const methodNotAllowed = (req, res) => {
 //router definition with its method calling
 registrationRouter
     .get('/:id', getFarmer)
-    .post('/', createFarmer) //post for omang number
+    .post('/', authMidWare, createFarmer) //post for omang number
     .post('/otp/', handleOTPResponse) //post for otp 
     .put('/:id', updateFarmer)
     .delete('/', methodNotAllowed);
